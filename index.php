@@ -5,7 +5,6 @@ if ($mysqli->connect_error) {
             . $mysqli->connect_error);
 }
 $groups = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
