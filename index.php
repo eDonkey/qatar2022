@@ -15,6 +15,7 @@ $groups = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
 	<title>Document</title>
 </head>
 <body>
+<?php include("usuario/session.php"); ?>
 	<table style="border:1px solid black">
 		<tr style="border: 1px solid black">
 <?php

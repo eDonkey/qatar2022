@@ -1,4 +1,8 @@
 <?php
+include("usuario/session.php");
+if (!isset($_SESSION['id'])) {
+	die("Can not access here");
+}
 setlocale(LC_ALL, 'es_es');
 $mysqli = new mysqli('localhost', 'mundial', 'Aj0jwttg88!', 'mundial');
 if ($mysqli->connect_error) {
@@ -6,6 +10,7 @@ if ($mysqli->connect_error) {
             . $mysqli->connect_error);
 }
 $groups = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+$uid = $_SESSION['id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,20 +47,26 @@ $groups = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
 			$queryestadio = "SELECT * FROM `estadios` WHERE id='".$rows['place']."' LIMIT 1";
 			$res_queryestadio = $mysqli->query($queryestadio);
 			$rows_queryestadio = $res_queryestadio->fetch_assoc();
+			$matchid = $rows['id'];
+			$query_saved_result = "SELECT * FROM `fasedegrupos_resultados` WHERE userid='$uid' AND grupo='$groups[$i]' AND id_partido='$matchid' LIMIT 1";
+			//die(var_dump($query_saved_result));
+			$res_query_saved_result = $mysqli->query($query_saved_result);
+			$rows_saved_result = $res_query_saved_result->fetch_assoc();
 		?>
-		<input type="hidden" name="userid" id="userid" value="34255385" />
+		<input type="hidden" name="match[<?php echo $rows['id']; ?>]" id="match[<?php echo $rows['id']; ?>]" value="match[<?php echo $rows['id']; ?>]" />
+		<input type="hidden" name="userid" id="userid" value="<?php echo $uid; ?>" />
 		<input type="hidden" name="grupo" id="grupo" value="<?php echo $groups[$i]; ?>" />
 			<td style="text-align:center;" width="250px" height="150px">
 				<img src="<?php echo $rows_queryteam_a['flag']; ?>" title="<?php echo $rows_queryteam_a['nombre']; ?>" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="imgs/versus.png" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="<?php echo $rows_queryteam_b['flag']; ?>" title="<?php echo $rows_queryteam_b['nombre']; ?>" /><br />
-				<input type="number" name="match_<?php echo $rows['id']; ?>_team_a_score" id="match_<?php echo $rows['id']; ?>_team_a_score" min="0" style="width:30px;" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" name="match_<?php echo $rows['id']; ?>_team_b_score" id="match_<?php echo $rows['id']; ?>_team_b_score" min="0" style="width:30px;" /><br>
+				<input type="number" value="<?php echo $rows_saved_result['equipoa_score']?>" name="match[<?php echo $rows['id']; ?>][team_a]" id="match[<?php echo $rows['id']; ?>][team_a]" min="0" style="width:30px;" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" value="<?php echo $rows_saved_result['equipob_score']?>" name="match[<?php echo $rows['id']; ?>][team_b]" id="match[<?php echo $rows['id']; ?>][team_b]" min="0" style="width:30px;" /><br>
 				<?php echo date("D M j G:i:s", strtotime($rows['fechayhora'])); ?><br />
 				Estadio: <a href="<?php echo $rows_queryestadio['mapsurl']; ?>" target="_blank"><?php echo $rows_queryestadio['nombre']; ?></a>
 			</td>		
-<?php } ?>
+<?php 	} ?>
 	</tr>
 	<tr>
 		<td colspan="6" style="text-align:center;">
-			<input type="submit" value="Guardar" />
+			<input type="submit" value="Guardar" <?php if ($uid === 0) { echo "disabled"; } ?>/>
 		</td>
 	</form>
 		</tr>

@@ -5,20 +5,65 @@ if ($mysqli->connect_error) {
             . $mysqli->connect_error);
 }
 $grupo = $_POST['grupo'];
-$counter = 0;
-foreach ($_POST as $key => $value) {
-    if ($counter == 0) {
-        $uid = $value;
-        $data = array($uid);
-        $counter++;
-    } else { 
-        $data[$uid][$key] = $value;
-        $counter++;
+$userid = $_POST['userid'];
+$grupo = $_POST['grupo'];
+if ( $grupo == "A" ) {
+    for ( $i=1; $i <= 6; $i++) {
+        $equipoascore = $_POST['match'][$i]['team_a'];
+        $equipobscore = $_POST['match'][$i]['team_b'];
+        $query = "UPDATE `fasedegrupos_resultados` SET `equipoa_score`='$equipoascore',`equipob_score`='$equipobscore' WHERE `userid`='$userid' AND `id_partido`='$i' AND `grupo`='$grupo'";
+        $mysqli->query($query);
     }
+} elseif ( $grupo == "B" ) {
+    for ($i=7;$i<=12;$i++) {
+        $equipoascore = $_POST['match'][$i]['team_a'];
+        $equipobscore = $_POST['match'][$i]['team_b'];
+        $query = "UPDATE `fasedegrupos_resultados` SET `equipoa_score`='$equipoascore',`equipob_score`='$equipobscore' WHERE `userid`='$userid' AND `id_partido`='$i' AND `grupo`='$grupo'";
+        $mysqli->query($query);
+    }
+} elseif ( $grupo == "C" ) {
+    for ($i=13;$i<=18;$i++) {
+        $equipoascore = $_POST['match'][$i]['team_a'];
+        $equipobscore = $_POST['match'][$i]['team_b'];
+        $query = "UPDATE `fasedegrupos_resultados` SET `equipoa_score`='$equipoascore',`equipob_score`='$equipobscore' WHERE `userid`='$userid' AND `id_partido`='$i' AND `grupo`='$grupo'";
+        $mysqli->query($query);
+    }
+} elseif ( $grupo == "D" ) {
+    for ($i=19;$i<=24;$i++) {
+        $equipoascore = $_POST['match'][$i]['team_a'];
+        $equipobscore = $_POST['match'][$i]['team_b'];
+        $query = "UPDATE `fasedegrupos_resultados` SET `equipoa_score`='$equipoascore',`equipob_score`='$equipobscore' WHERE `userid`='$userid' AND `id_partido`='$i' AND `grupo`='$grupo'";
+        $mysqli->query($query);
+    }
+} elseif ( $grupo == "E" ) {
+    for ($i=25;$i<=30;$i++) {
+        $equipoascore = $_POST['match'][$i]['team_a'];
+        $equipobscore = $_POST['match'][$i]['team_b'];
+        $query = "UPDATE `fasedegrupos_resultados` SET `equipoa_score`='$equipoascore',`equipob_score`='$equipobscore' WHERE `userid`='$userid' AND `id_partido`='$i' AND `grupo`='$grupo'";
+        $mysqli->query($query);
+    }
+} elseif ( $grupo == "F" ) {
+    for ($i=31;$i<=36;$i++) {
+        $equipoascore = $_POST['match'][$i]['team_a'];
+        $equipobscore = $_POST['match'][$i]['team_b'];
+        $query = "UPDATE `fasedegrupos_resultados` SET `equipoa_score`='$equipoascore',`equipob_score`='$equipobscore' WHERE `userid`='$userid' AND `id_partido`='$i' AND `grupo`='$grupo'";
+        $mysqli->query($query);
+    }
+} elseif ( $grupo == "G" ) {
+    for ($i=37;$i<=42;$i++) {
+        $equipoascore = $_POST['match'][$i]['team_a'];
+        $equipobscore = $_POST['match'][$i]['team_b'];
+        $query = "UPDATE `fasedegrupos_resultados` SET `equipoa_score`='$equipoascore',`equipob_score`='$equipobscore' WHERE `userid`='$userid' AND `id_partido`='$i' AND `grupo`='$grupo'";
+        $mysqli->query($query);
+    }
+} elseif ( $grupo == "H" ) {
+    for ($i=43;$i<=48;$i++) {
+        $equipoascore = $_POST['match'][$i]['team_a'];
+        $equipobscore = $_POST['match'][$i]['team_b'];
+        $query = "UPDATE `fasedegrupos_resultados` SET `equipoa_score`='$equipoascore',`equipob_score`='$equipobscore' WHERE `userid`='$userid' AND `id_partido`='$i' AND `grupo`='$grupo'";
+        $mysqli->query($query);
+    }
+} else {
+    echo "Error. Grupo inexistente";
 }
-unset($data[0]);
-unset($data[$uid]['grupo']);
-$jsonData = $mysqli->real_escape_string(json_encode($data));
-$query = "INSERT INTO `fasedegrupos_resultados` (`id`, `userid`, `grupo`, `resultados`, `creado`) VALUES (NULL, '".$uid."', '".$grupo."', '".$jsonData."', CURRENT_TIMESTAMP)";
-$mysqli->query($query) or die("Error! ".$mysqli->connect_error);
 ?>
